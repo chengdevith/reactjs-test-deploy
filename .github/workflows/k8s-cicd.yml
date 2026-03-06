@@ -1,0 +1,18 @@
+# set condition
+on:
+  push:
+    branches: ["master"]
+
+# build docker image and push it into docker hub
+jobs:
+  ci_job:
+    runs_on: ubuntu-latest
+    steps: 
+      - name: Checkout Code
+        uses: actions/checkout@3
+      - name: Using commit SHA
+        run: |
+          echo "TAG=${GITHUB_SHA::8}" >> $GITHUB_ENV
+      - name: Show the SHA values
+        run: |
+          ech "TAG=${env.TAG}"
