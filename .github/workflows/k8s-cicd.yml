@@ -6,7 +6,7 @@ on:
 # build docker image and push it into docker hub
 jobs:
   ci_job:
-    runs_on: ubuntu-latest
+    runs-on: ubuntu-latest
     steps: 
       - name: Checkout Code
         uses: actions/checkout@3
