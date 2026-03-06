@@ -24,10 +24,10 @@ jobs:
           echo "${{ secrets.TOKEN }}" | docker login -u ${{ secrets.USERNAME }} --password-stdin
       - name: Build & tag 
         run: |
-          docker build -t ${{ secrets.USERNAME}}/${{ env.DOCKER_IMAGE_NAME }} .
+          docker build -t ${{ secrets.USERNAME}}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.TAG }} .
       - name: Push to dockerhub
         run: |
-          docker push ${{ secrets.USERNAME}}/${{ env.DOCKER_IMAGE_NAME }} .
+          docker push ${{ secrets.USERNAME}}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.TAG }} .
       - name: Log from dockerhub
         if: always()
         run: | 
