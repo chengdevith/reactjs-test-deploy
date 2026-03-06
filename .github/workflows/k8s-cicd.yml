@@ -27,7 +27,7 @@ jobs:
           docker build -t ${{ secrets.USERNAME}}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.TAG }} .
       - name: Push to dockerhub
         run: |
-          docker push ${{ secrets.USERNAME}}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.TAG }} .
+          docker push ${{ secrets.USERNAME}}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.TAG }} 
       - name: Log from dockerhub
         if: always()
         run: | 
