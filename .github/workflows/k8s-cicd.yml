@@ -36,36 +36,36 @@ jobs:
           docker logout
   # cd
   cd-job:
-  needs: ci-job
-  runs-on: ubuntu-latest
-  steps:
-    - name: Set commit SHA
-      run: echo "TAG=${GITHUB_SHA::8}" >>$GITHUB_ENV
+    needs: ci-job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set commit SHA
+        run: echo "TAG=${GITHUB_SHA::8}" >>$GITHUB_ENV
 
-    - name: Checkout Helm repo
-      uses: actions/checkout@v3
-      with:
-        repository: chengdevith/reactjs-chart
-        path: helm_repo
-        token: ${{ secrets.GIT_TOKEN }} 
+      - name: Checkout Helm repo
+        uses: actions/checkout@v3
+        with:
+          repository: chengdevith/reactjs-chart
+          path: helm_repo
+          token: ${{ secrets.GIT_TOKEN }}  # your fine-grained PAT
 
-    - name: Update Helm chart
-      run: |
-        cd helm_repo
+      - name: Update Helm chart
+        run: |
+          cd helm_repo
 
-        echo "Update repository username/image_name"
-        yq -i ".image.repository=\"${{ secrets.USERNAME }}\"" values.yaml
+          echo "Update repository username/image_name"
+          yq -i ".image.repository=\"${{ secrets.USERNAME }}\"" values.yaml
 
-        echo "Update image tag"
-        yq -i ".image.tag=\"${{ env.TAG }}\"" values.yaml
+          echo "Update image tag"
+          yq -i ".image.tag=\"${{ env.TAG }}\"" values.yaml
 
-        git config user.email "chengdevith5@gmail.com"
-        git config user.name "chengdevith"
-        git add .
-        git commit -m "update helm to use image ${{ env.TAG }}"
+          git config user.email "chengdevith5@gmail.com"
+          git config user.name "chengdevith"
+          git add .
+          git commit -m "update helm to use image ${{ env.TAG }}"
 
-        # Simple push: token is already handled by checkout
-        git push
+          # Simple push: token is already handled by checkout
+          git push
 
-    - name: Clean up
-      run: rm -rf helm_repo
+      - name: Clean up
+        run: rm -rf helm_repo
