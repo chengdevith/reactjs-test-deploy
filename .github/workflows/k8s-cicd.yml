@@ -38,6 +38,7 @@ jobs:
   cd-job:
     needs: ci-job
     runs-on: ubuntu-latest
+    environment: DOCKER_ENV
     steps:
       - name: Set commit SHA
         run: echo "TAG=${GITHUB_SHA::8}" >>$GITHUB_ENV
@@ -47,7 +48,7 @@ jobs:
         with:
           repository: chengdevith/reactjs-chart
           path: helm_repo
-          token: ${{ secret.GIT_TOKEN }}
+          token: ${{ secrets.GIT_TOKEN }}
 
       - name: Update Helm chart
         run: |
