@@ -47,7 +47,7 @@ jobs:
           git clone ${{ env.HELM_REPO }} helm_repo
       - name: Update helm chart
         run: |
-          cd helm_repo/reactjs-chart
+          cd helm_repo
 
           echo "Update repository username/image_name"
 
@@ -59,10 +59,10 @@ jobs:
 
           git config --global user.email "chengdevith5@gmail.com"
           git config --global user.name "chengdevith"
-          git add.
+          git add .
           git commit -m "update helm to use image ${{ env.TAG}}"
 
-          git push https://${{ secrets.USERNAME }}@github.com/${{ env.HELM_REPO }}
+          git push https://${{ secrets.GIT_TOKEN }}@github.com/${{ env.HELM_REPO }}
 
       - name: Clean up
         run: |
