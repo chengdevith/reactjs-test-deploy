@@ -5,7 +5,7 @@ on:
 
 env:
   DOCKER_IMAGE_NAME: gitops
-  HELM_REPO: chengdevith/reactjs-chart.git
+  HELM_REPO: chengdevith/reactjs-chart.git 
 # build docker image and push it into docker hub
 jobs:
   # ci
@@ -62,7 +62,7 @@ jobs:
           git add .
           git commit -m "update helm to use image ${{ env.TAG}}"
 
-          git push ${{ secrets.GIT_TOKEN }}@github.com/${{ env.HELM_REPO }}
+          git push https://${{ secrets.GIT_TOKEN }}@github.com/chengdevith/reactjs-chart.git
 
       - name: Clean up
         run: |
