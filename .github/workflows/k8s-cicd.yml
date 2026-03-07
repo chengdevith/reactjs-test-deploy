@@ -47,7 +47,7 @@ jobs:
         with:
           repository: chengdevith/reactjs-chart
           path: helm_repo
-          token: ${{ secrets.GIT_TOKEN }}  # your fine-grained PAT
+          token: ${{ secret.GIT_TOKEN }}
 
       - name: Update Helm chart
         run: |
