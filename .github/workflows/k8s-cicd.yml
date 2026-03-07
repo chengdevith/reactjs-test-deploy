@@ -36,34 +36,36 @@ jobs:
           docker logout
   # cd
   cd-job:
-    needs: ci-job
-    runs-on: ubuntu-latest
-    steps:
-      - name: Add commit SHA to tag env
-        run: |
-          echo "TAG=${GITHUB_SHA::8}" >>$GITHUB_ENV
-      - name: Clone argocd repo
-        run: |
-          git clone https://github.com/${{ env.HELM_REPO }} helm_repo
-      - name: Update helm chart
-        run: |
-          cd helm_repo
+  needs: ci-job
+  runs-on: ubuntu-latest
+  steps:
+    - name: Set commit SHA
+      run: echo "TAG=${GITHUB_SHA::8}" >>$GITHUB_ENV
 
-          echo "Update repository username/image_name"
+    - name: Checkout Helm repo
+      uses: actions/checkout@v3
+      with:
+        repository: chengdevith/reactjs-chart
+        path: helm_repo
+        token: ${{ secrets.GIT_TOKEN }} 
 
-          yq -i ".image.repository=\"${{ secrets.USERNAME }}\"" values.yaml
+    - name: Update Helm chart
+      run: |
+        cd helm_repo
 
-          echo "update image tag"
+        echo "Update repository username/image_name"
+        yq -i ".image.repository=\"${{ secrets.USERNAME }}\"" values.yaml
 
-          yq -i ".image.tag=\"${{ env.TAG }}\"" values.yaml
+        echo "Update image tag"
+        yq -i ".image.tag=\"${{ env.TAG }}\"" values.yaml
 
-          git config --global user.email "chengdevith5@gmail.com"
-          git config --global user.name "chengdevith"
-          git add .
-          git commit -m "update helm to use image ${{ env.TAG}}"
+        git config user.email "chengdevith5@gmail.com"
+        git config user.name "chengdevith"
+        git add .
+        git commit -m "update helm to use image ${{ env.TAG }}"
 
-          git push https://${{ secrets.GIT_TOKEN }}@github.com/chengdevith/reactjs-chart.git
+        # Simple push: token is already handled by checkout
+        git push
 
-      - name: Clean up
-        run: |
-          rm -rf helm_repo
+    - name: Clean up
+      run: rm -rf helm_repo
