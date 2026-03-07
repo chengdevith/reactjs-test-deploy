@@ -5,7 +5,7 @@ on:
 
 env:
   DOCKER_IMAGE_NAME: gitops
-  HELM_REPO: https://github.com/chengdevith/reactjs-chart.git
+  HELM_REPO: chengdevith/reactjs-chart.git
 # build docker image and push it into docker hub
 jobs:
   # ci
@@ -44,7 +44,7 @@ jobs:
           echo "TAG=${GITHUB_SHA::8}" >>$GITHUB_ENV
       - name: Clone argocd repo
         run: |
-          git clone ${{ env.HELM_REPO }} helm_repo
+          git clone https://github.com/${{ env.HELM_REPO }} helm_repo
       - name: Update helm chart
         run: |
           cd helm_repo
