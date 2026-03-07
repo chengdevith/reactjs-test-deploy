@@ -38,7 +38,7 @@ jobs:
   cd-job:
     needs: ci-job
     runs-on: ubuntu-latest
-    environment: DOCKER_ENV
+    environment: HEML_ENV
     steps:
       - name: Set commit SHA
         run: echo "TAG=${GITHUB_SHA::8}" >>$GITHUB_ENV
