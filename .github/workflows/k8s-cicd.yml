@@ -53,6 +53,9 @@ jobs:
         run: |
           cd helm_repo
 
+          echo "Update replicaCount"
+          yq -i ".replicaCount=3" values.yaml
+
           echo "Update repository username/image_name"
           yq -i ".image.repository=\"${{ secrets.USERNAME }}/gitops\"" values.yaml
 
