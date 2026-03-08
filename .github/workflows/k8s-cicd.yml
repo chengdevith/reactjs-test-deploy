@@ -6,6 +6,7 @@ on:
 env:
   DOCKER_IMAGE_NAME: gitops
   REPLICAS: 3
+  DOMAIN: planting-k8s.devith.it.com
 # build docker image and push it into docker hub
 jobs:
   # ci
@@ -56,6 +57,21 @@ jobs:
 
           echo "Update replicaCount"
           yq -i ".replicaCount=${{ env.REPLICAS}}" values.yaml
+
+          echo "Enable ingress"
+          yq -i '.ingress.enabled=true' values.yaml
+
+          echo "Add ingress annotation"
+          yq -i '.ingress.annotations."cert-manager.io/cluster-issuer"="letsencrypt-prod"' values.yaml
+
+          echo "Set ingress class"
+          yq -i '.ingress.className="nginx"' values.yaml
+
+          echo "Update ingress host"
+          yq -i '.ingress.hosts[0].host="${{ env.DOMAIN }}"' values.yaml
+
+          echo "Update TLS"
+          yq -i '.ingress.tls=[{"secretName": "${{ env.DOCKER_IMAGE_NAME }}-tls", "hosts": ["${{ env.DOMAIN }}"]}]' values.yaml
 
           echo "Update repository username/image_name"
           yq -i ".image.repository=\"${{ secrets.USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}\"" values.yaml
