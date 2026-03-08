@@ -55,7 +55,7 @@ jobs:
           cd helm_repo
 
           echo "Update repository username/image_name"
-          yq -i ".image.repository=\"${{ secrets.USERNAME }}\"" values.yaml
+          yq -i ".image.repository=\"${{ secrets.USERNAME }}/gitops\"" values.yaml
 
           echo "Update image tag"
           yq -i ".image.tag=\"${{ env.TAG }}\"" values.yaml
