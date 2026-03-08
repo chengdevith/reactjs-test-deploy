@@ -5,7 +5,7 @@ on:
 
 env:
   DOCKER_IMAGE_NAME: gitops
-  REPLICAS: 3
+  REPLICAS: 1
   DOMAIN: planting-k8s.devith.it.com
 # build docker image and push it into docker hub
 jobs:
