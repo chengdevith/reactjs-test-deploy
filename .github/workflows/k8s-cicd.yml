@@ -76,6 +76,9 @@ jobs:
           echo "Update repository username/image_name"
           yq -i ".image.repository=\"${{ secrets.USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}\"" values.yaml
 
+          echo "Update pathType"
+          yq -i '.ingress.hosts[0].paths[0].pathType="Prefix"' values.yaml
+          
           echo "Update image tag"
           yq -i ".image.tag=\"${{ env.TAG }}\"" values.yaml
 
