@@ -5,6 +5,7 @@ on:
 
 env:
   DOCKER_IMAGE_NAME: gitops
+  REPLICAS: 3
 # build docker image and push it into docker hub
 jobs:
   # ci
@@ -54,10 +55,10 @@ jobs:
           cd helm_repo
 
           echo "Update replicaCount"
-          yq -i ".replicaCount=1" values.yaml
+          yq -i ".replicaCount=${{ env.REPLICAS}}" values.yaml
 
           echo "Update repository username/image_name"
-          yq -i ".image.repository=\"${{ secrets.USERNAME }}/gitops\"" values.yaml
+          yq -i ".image.repository=\"${{ secrets.USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}\"" values.yaml
 
           echo "Update image tag"
           yq -i ".image.tag=\"${{ env.TAG }}\"" values.yaml
