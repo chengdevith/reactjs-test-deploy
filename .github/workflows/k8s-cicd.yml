@@ -5,7 +5,7 @@ on:
 
 env:
   DOCKER_IMAGE_NAME: gitops
-  REPLICAS: 1
+  REPLICAS: 3
   DOMAIN: planting-k8s.devith.it.com
 # build docker image and push it into docker hub
 jobs:
@@ -101,7 +101,7 @@ jobs:
           # git add .
           # git commit -m "update helm to use image ${{ env.TAG }}"
           # git push
-          
+
       - name: Commit & Push Helm changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
