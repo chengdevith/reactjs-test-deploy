@@ -16,17 +16,21 @@ jobs:
     steps: 
       - name: Checkout Code
         uses: actions/checkout@v3
+
       - name: Using commit SHA
         run: |
           echo "TAG=${GITHUB_SHA::8}" >> $GITHUB_ENV
+
       - name: Show the SHA values
         run: |
           echo "TAG = ${{ env.TAG }}"
+
       - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.USERNAME}}
           password: ${{ secrets.TOKEN }}
+
       - name: Build & Push
         uses: docker/build-push-action@v6
         with:
@@ -35,6 +39,7 @@ jobs:
           tags: ${{ secrets.USERNAME}}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.TAG }}
           cache-from: type=registry,ref=${{ secrets.USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:cache
           cache-to: type=registry,ref=${{ secrets.USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:cache,mode=max
+
       # - name: Docker login
       #   run: |
       #     echo "${{ secrets.TOKEN }}" | docker login -u ${{ secrets.USERNAME }} --password-stdin
@@ -48,6 +53,7 @@ jobs:
       #   if: always()
       #   run: | 
       #     docker logout
+      
   # cd
   cd-job:
     needs: ci-job
